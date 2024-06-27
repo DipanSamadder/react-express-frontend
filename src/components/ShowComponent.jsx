@@ -1,6 +1,8 @@
 import {useState, useEffect} from "react";
 import postSevices from "../services/postSevices";
-
+import UpdateModalComponent from "./UpdateModalComponent";
+import {Button} from "react-bootstrap";
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 function ShowComponent(){
 
@@ -12,7 +14,7 @@ function ShowComponent(){
 
     useEffect(() => {
         fetchPosts();
-    }, []);
+    }, [posts]);
     const deletePost = async(id, e) => {
         const response = await postSevices.deletePost(id);
         if(response.data.success == true){
@@ -35,6 +37,7 @@ function ShowComponent(){
                                 <th>Content</th>
                                 <th>Image</th>
                                 <th>delete</th>
+                                <th>Edit</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -47,7 +50,8 @@ function ShowComponent(){
                                         <td>
                                             <img src={'http://localhost:8000/api/uploaded/' +post.image} alt="{post.image}" style={{ width:'100px' }}/>
                                         </td>
-                                        <td><button id={post._id} onClick={(e) => deletePost(post._id, e)}>delete</button></td>
+                                        <td><Button variant="dark" id={post._id} onClick={(e) => deletePost(post._id, e)}>Delete</Button></td>
+                                        <td><UpdateModalComponent id={post._id} title={post.title} date={post.date} content={post.content} /></td>
                                     </tr>
                                     )
                                 )
